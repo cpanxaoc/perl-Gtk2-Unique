@@ -46,7 +46,10 @@ sub main {
 	
 	# Code generation
 	Gtk2::CodeGen->parse_maps('unique', input => [ @typemaps ]);
-	Gtk2::CodeGen->write_boot(xs_files => [ @XS_FILES ]);
+	Gtk2::CodeGen->write_boot(
+		ignore   => qr/^Gtk2::Unique$/,
+		xs_files => [ @XS_FILES ],
+	);
 	
 	
 	$DEPENDS->set_inc($pkgconfig{cflags} . ' -I./build');
@@ -73,12 +76,12 @@ sub main {
 		PREREQ_PM     => {
 			'Gtk2' => '1.161', # Other verions might work too (Ubuntu 8.04 has this version)
 		},
-		PREREQ_FATAL  => 1, # Gtk2 is mandatory otherwise the Makefile can't be created
+		PREREQ_FATAL  => 1,
 		
 		XSPROTOARG    => '-noprototypes ',
-#		MAN3PODS      => {
-#			Glib::MakeHelper->do_pod_files(@XS_FILES),
-#		},
+		MAN3PODS      => {
+			Glib::MakeHelper->do_pod_files(@XS_FILES),
+		},
 
 		$DEPENDS->get_makefile_vars(),
 		
