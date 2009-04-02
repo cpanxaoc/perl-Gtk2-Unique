@@ -1,0 +1,6 @@
+^build/
+^Makefile$
+^Makefile[.]old$
+^xs/.*[.][co]$
+^blib/
+^pm_to_blib$

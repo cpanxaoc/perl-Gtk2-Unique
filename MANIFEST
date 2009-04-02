@@ -1,0 +1,13 @@
+Changes
+MANIFEST
+MANIFEST.SKIP
+Makefile.PL
+README
+lib/Gtk2/Unique.pm
+maps
+unique-perl.h
+xs/UniqueApp.xs
+xs/UniqueBackend.xs
+xs/UniqueMessage.xs
+xs/Unique.xs
+t/Unique.t
