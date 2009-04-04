@@ -10,8 +10,8 @@ use Gtk2::Unique;
 exit tests();
 
 sub tests {
-	my $backend = Gtk2::UniqueMessageData->new();
-	isa_ok($backend, 'Gtk2::UniqueBackend');
+	my $message = Gtk2::UniqueMessageData->new();
+	isa_ok($message, 'Gtk2::UniqueMessageData');
 	
 	return 0;
 }
