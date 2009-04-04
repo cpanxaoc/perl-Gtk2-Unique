@@ -1,13 +1,14 @@
 #include "unique-perl.h"
 
 
-MODULE = Gtk2::UniqueMessage  PACKAGE = Gtk2::UniqueMessage  PREFIX = unique_message_data_
+MODULE = Gtk2::UniqueMessageData  PACKAGE = Gtk2::UniqueMessageData  PREFIX = unique_message_data_
 
 PROTOTYPES: DISABLE
 
 
 UniqueMessageData*
-unique_message_data_new ()
+unique_message_data_new (class)
+	C_ARGS: /* No args */
 
 
 UniqueMessageData*
