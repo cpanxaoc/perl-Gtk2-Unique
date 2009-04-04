@@ -7,11 +7,13 @@ PROTOTYPES: DISABLE
 
 
 UniqueApp*
-unique_app_new (const gchar *name, const gchar *startup_id)
+unique_app_new (class, const gchar *name, const gchar_ornull *startup_id)
+	C_ARGS: name, startup_id
 
 
-UniqueApp*
-unique_app_new_with_commands (const gchar *name, const gchar *startup_id, const gchar *first_command_name, ...)
+#UniqueApp*
+#unique_app_new_with_commands (class, const gchar *name, const gchar_ornull *startup_id, const gchar *first_command_name, ...)
+#	C_ARGS: name, startup_id, first_command_name, VA_ARGS
 
 
 void
@@ -27,4 +29,4 @@ unique_app_is_running (UniqueApp *app)
 
 
 UniqueResponse
-unique_app_send_message (UniqueApp *app, gint command_id, UniqueMessageData *message_data)
+unique_app_send_message (UniqueApp *app, gint command_id, UniqueMessageData_ornull *message_data)
