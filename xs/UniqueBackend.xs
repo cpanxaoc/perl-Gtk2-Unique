@@ -7,7 +7,8 @@ PROTOTYPES: DISABLE
 
 
 UniqueBackend*
-unique_backend_create ()
+unique_backend_create (class)
+	C_ARGS: /* No args */
 
 
 const gchar*
@@ -43,4 +44,4 @@ unique_backend_request_name  (UniqueBackend *backend)
 
 
 UniqueResponse
-unique_backend_send_message (UniqueBackend *backend, gint command_id, UniqueMessageData *message_data, guint time_)
+unique_backend_send_message (UniqueBackend *backend, gint command_id, UniqueMessageData_ornull *message_data, guint time_)
