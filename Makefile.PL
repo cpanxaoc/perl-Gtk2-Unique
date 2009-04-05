@@ -56,7 +56,8 @@ sub main {
 	$DEPENDS->set_libs($pkgconfig{libs});
 	$DEPENDS->add_xs(@XS_FILES);
 	$DEPENDS->add_typemaps(
-		File::Spec->catfile(cwd(), 'build', 'unique.typemap')
+		File::Spec->catfile(cwd(), 'build', 'unique.typemap'),
+		File::Spec->catfile(cwd(), 'unique.typemap')
 	);
 	$DEPENDS->install(
 		File::Spec->catfile('build', 'unique-autogen.h'),
