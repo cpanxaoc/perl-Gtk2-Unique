@@ -6,8 +6,12 @@ README
 lib/Gtk2/Unique.pm
 maps
 unique-perl.h
+unique.typemap
 xs/UniqueApp.xs
 xs/UniqueBackend.xs
-xs/UniqueMessage.xs
+xs/UniqueMessageData.xs
 xs/Unique.xs
 t/Unique.t
+t/UniqueApp.t
+t/UniqueBackend.t
+t/UniqueMessageData.t

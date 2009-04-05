@@ -4,3 +4,5 @@
 ^xs/.*[.][co]$
 ^blib/
 ^pm_to_blib$
+^[.]git
+^Unique[.]bs$
