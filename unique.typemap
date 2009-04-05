@@ -1,0 +1,4 @@
+TYPEMAP
+
+UniqueMessageData*         T_GPERL_GENERIC_WRAPPER
+UniqueMessageData_ornull*  T_GPERL_GENERIC_WRAPPER
