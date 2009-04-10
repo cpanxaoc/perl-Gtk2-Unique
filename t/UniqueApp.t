@@ -3,19 +3,79 @@
 use strict;
 use warnings;
 
-use Gtk2::TestHelper tests => 3;
+use Gtk2::TestHelper tests => 18;
 
 use Gtk2::Unique;
 
-my $COMMAND_TEST = 1;
+my $COMMAND_FOO = 1;
+my $COMMAND_BAR = 2;
 
 exit tests();
 
+
 sub tests {
+	tests_new();
+	tests_new_with_commands();
+	return 0;
+}
+
+
+sub tests_new {
 	my $app = Gtk2::UniqueApp->new("org.example.Sample", undef);
 	isa_ok($app, 'Gtk2::UniqueApp');
 	
-	$app->add_command("test", $COMMAND_TEST);
+	$app->add_command(foo => $COMMAND_FOO);
+	$app->add_command(bar => $COMMAND_BAR);
+	
+	generic_test($app);
+}
+
+
+sub tests_new_with_commands {
+
+	my @commands = (
+		foo => $COMMAND_FOO,
+		bar => $COMMAND_BAR,
+	);
+
+	my $app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, @commands);
+	isa_ok($app, 'Gtk2::UniqueApp');
+	
+	generic_test($app);
+
+	my $pass;
+
+	# Check that the constructor enforces ints for the command ID
+	$app = undef;
+	$pass = 1;	
+	eval {
+		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, 'not-an-int', 'command');
+		$pass = 0;
+	};
+	if (my $error = $@) {
+		$pass = 1;	
+	}
+	ok($pass, "new_with_command() checks for IDs as int");
+
+
+
+	# Check that the constructor enforces the argument count
+	$app = undef;
+	$pass = 1;	
+	eval {
+		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, 1, 'command', 3);
+		$pass = 0;
+	};
+	if (my $error = $@) {
+		$pass = 1;	
+	}
+	ok($pass, "new_with_command() checks for argument count");
+
+}
+
+
+sub generic_test {
+	my ($app) = @_;
 	
 	my $window = Gtk2::Window->new();
 	$app->watch_window($window);
@@ -27,21 +87,19 @@ sub tests {
 #	isa_ok($response, 'Gtk2::UniqueResponse');
 #	is ($response, 'invalid', "send_message(undef)");
 
-	$response = $app->send_message($COMMAND_TEST, {text => "hello"});
+	$response = $app->send_message($COMMAND_FOO, {text => "hello"});
 	isa_ok($response, 'Gtk2::UniqueResponse');
 	is ($response, 'invalid', "send_message()");
 
-	$response = $app->send_message($COMMAND_TEST, {filename => __FILE__});
+	$response = $app->send_message($COMMAND_FOO, {filename => __FILE__});
 	isa_ok($response, 'Gtk2::UniqueResponse');
 	is ($response, 'invalid', "send_message()");
 
-	$response = $app->send_message($COMMAND_TEST, {uris => [
+	$response = $app->send_message($COMMAND_FOO, {uris => [
 		'http://live.gnome.org/LibUnique',
 		'http://gtk2-perl.sourceforge.net/',
 	]});
 	isa_ok($response, 'Gtk2::UniqueResponse');
 	is ($response, 'invalid', "send_message()");
-
-	return 0;
 }
 
