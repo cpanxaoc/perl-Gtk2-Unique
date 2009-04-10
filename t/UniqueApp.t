@@ -50,7 +50,7 @@ sub tests_new_with_commands {
 	$app = undef;
 	$pass = 1;	
 	eval {
-		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, 'not-an-int', 'command');
+		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, foo => 'not-an-int');
 		$pass = 0;
 	};
 	if (my $error = $@) {
@@ -63,7 +63,7 @@ sub tests_new_with_commands {
 	$app = undef;
 	$pass = 1;	
 	eval {
-		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, 1, 'command', 3);
+		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, foo => 1, 'bar');
 		$pass = 0;
 	};
 	if (my $error = $@) {
