@@ -15,6 +15,8 @@ newSVUniqueMessageData (UniqueMessageData *message) {
 	SV *value;
 	gchar *text;
 	
+	g_print("newSVUniqueMessageData %p\n", message);
+	g_print("text = %p\n", unique_message_data_get_text(message));
 	if (! message) {
 		return newSVsv(&PL_sv_undef);
 	}
@@ -51,6 +53,7 @@ SvUniqueMessageData (SV *data) {
 	UniqueMessageData *message;
 	gboolean is_valid = FALSE;
 
+	g_print("SvUniqueMessageData\n");
 	if ((!data) || (!SvOK(data)) || (!SvRV(data)) || (SvTYPE(SvRV(data)) != SVt_PVHV)) {
 		croak("SvUniqueMessageData: value must be an hashref");
 	}
@@ -91,60 +94,3 @@ MODULE = Gtk2::UniqueMessageData  PACKAGE = Gtk2::UniqueMessageData  PREFIX = un
 
 PROTOTYPES: DISABLE
 
-
-UniqueMessageData*
-unique_message_data_new (class)
-	C_ARGS: /* No args */
-
-
-UniqueMessageData*
-unique_message_data_copy (UniqueMessageData *message_data)
-
-#FIXME have perl unref the message through this function
-#void
-#unique_message_data_free (UniqueMessageData *message_data)
-
-
-void
-# FIXME guchar_ornull doesn't exist
-unique_message_data_set (UniqueMessageData *message_data, const guchar *data, gsize length)
-
-
-#const guchar_ornull*
-#unique_message_data_get (UniqueMessageData *message_data, gsize *length)
-
-
-gboolean
-unique_message_data_set_text (UniqueMessageData *message_data, const gchar *str, gssize length)
-
-
-gchar*
-unique_message_data_get_text (UniqueMessageData *message_data)
-
-
-#gboolean
-#unique_message_data_set_uris (UniqueMessageData *message_data, gchar **uris)
-# SEE: gtk_about_dialog_set_authors
-
-#gchar**
-#unique_message_data_get_uris (UniqueMessageData *message_data)
-# SEE: g_key_file_get_groups
-
-void
-unique_message_data_set_filename (UniqueMessageData *message_data, const gchar *filename)
-
-
-gchar*
-unique_message_data_get_filename (UniqueMessageData *message_data)
-
-
-GdkScreen*
-unique_message_data_get_screen (UniqueMessageData *message_data)
-
-
-const gchar*
-unique_message_data_get_startup_id (UniqueMessageData *message_data)
-
-
-guint
-unique_message_data_get_workspace (UniqueMessageData *message_data)
