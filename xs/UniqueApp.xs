@@ -52,11 +52,6 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 		RETVAL
 
 
-#UniqueApp*
-#unique_app_new_with_commands (class, const gchar *name, const gchar_ornull *startup_id, const gchar *first_command_name, ...)
-#	C_ARGS: name, startup_id, first_command_name, VA_ARGS
-
-
 void
 unique_app_add_command (UniqueApp *app, const gchar *command_name, gint command_id)
 
@@ -119,4 +114,6 @@ unique_app_send_message (UniqueApp *app, gint command_id, HV *data)
 		if (message) {
 			unique_message_data_free(message);
 		}
+	OUTPUT:
+		RETVAL
 
