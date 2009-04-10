@@ -35,13 +35,11 @@ at your option, any later version of Perl 5 you may have available.
 
 use warnings;
 use strict;
-
-our $VERSION = '0.01';
-
 use base 'DynaLoader';
 
 use Gtk2;
 
+our $VERSION = '0.01';
 
 sub dl_load_flags { $^O eq 'darwin' ? 0x00 : 0x01 }
 
