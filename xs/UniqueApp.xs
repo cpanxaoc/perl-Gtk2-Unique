@@ -34,7 +34,11 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 
 				if (! looks_like_number(command_id_sv)) {
 					g_object_unref(G_OBJECT(app));
-					croak("Invalid command_id at position %d, expected a number", i + 2);
+					croak(
+						"Invalid command_id at position %d, expected a number but got '%s'",
+						i, 
+						SvGChar(command_id_sv)
+					);
 				}
 				command_name = SvGChar(command_name_sv);
 				command_id = SvIV(command_id_sv);
@@ -42,7 +46,10 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 			}
 		}
 		else {
-			croak("Usage: Gtk2::UniqueApp->new(name, startup_id) or Gtk2::UniqueApp->new_with_commands(name, startup_id, @commands)");
+			croak(
+				"Usage: Gtk2::UniqueApp->new(name, startup_id)"
+				"or Gtk2::UniqueApp->new_with_commands(name, startup_id, @commands)"
+			);
 		}
 
 		RETVAL = app;
