@@ -2,10 +2,9 @@
 
 
 /**
- * Since UniqueMessageData ais not a registered type, we create a hasref that
+ * Since UniqueMessageData is not a registered type, we create a hasref that
  * contains the message data.
  */
-
 
 SV*
 newSVUniqueMessageData (UniqueMessageData *message) {
@@ -89,8 +88,5 @@ SvUniqueMessageData (SV *data) {
 }
 
 
-
 MODULE = Gtk2::UniqueMessageData  PACKAGE = Gtk2::UniqueMessageData  PREFIX = unique_message_data_
-
-PROTOTYPES: DISABLE
 

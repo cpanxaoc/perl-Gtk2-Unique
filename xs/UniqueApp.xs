@@ -3,8 +3,6 @@
 
 MODULE = Gtk2::UniqueApp  PACKAGE = Gtk2::UniqueApp  PREFIX = unique_app_
 
-PROTOTYPES: DISABLE
-
 
 UniqueApp*
 unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
