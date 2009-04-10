@@ -10,6 +10,7 @@ use Gtk2::Unique;
 my $COMMAND_FOO = 1;
 my $COMMAND_BAR = 2;
 
+
 exit tests();
 
 
@@ -58,7 +59,6 @@ sub tests_new_with_commands {
 	ok($pass, "new_with_command() checks for IDs as int");
 
 
-
 	# Check that the constructor enforces the argument count
 	$app = undef;
 	$pass = 1;	
@@ -89,17 +89,17 @@ sub generic_test {
 
 	$response = $app->send_message($COMMAND_FOO, {text => "hello"});
 	isa_ok($response, 'Gtk2::UniqueResponse');
-	is ($response, 'invalid', "send_message()");
+	is ($response, 'invalid', "send_message(text)");
 
 	$response = $app->send_message($COMMAND_FOO, {filename => __FILE__});
 	isa_ok($response, 'Gtk2::UniqueResponse');
-	is ($response, 'invalid', "send_message()");
+	is ($response, 'invalid', "send_message(filename)");
 
 	$response = $app->send_message($COMMAND_FOO, {uris => [
 		'http://live.gnome.org/LibUnique',
 		'http://gtk2-perl.sourceforge.net/',
 	]});
 	isa_ok($response, 'Gtk2::UniqueResponse');
-	is ($response, 'invalid', "send_message()");
+	is ($response, 'invalid', "send_message(uris)");
 }
 
