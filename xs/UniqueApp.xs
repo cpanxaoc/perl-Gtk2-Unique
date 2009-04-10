@@ -7,8 +7,49 @@ PROTOTYPES: DISABLE
 
 
 UniqueApp*
-unique_app_new (class, const gchar *name, const gchar_ornull *startup_id)
-	C_ARGS: name, startup_id
+unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
+	ALIAS:
+		Gtk2::UniqueApp::new_with_commands = 1
+	
+	PREINIT:
+		UniqueApp *app;
+		
+	CODE:
+		PERL_UNUSED_VAR(ix);
+
+		if (items == 3) {
+			app = unique_app_new(name, startup_id);
+		}
+		else if (items > 3 && (items % 2 == 1)) {
+			/* Calling unique_app_new_with_command(), First create a new app with
+			   unique_app_new() and the populate the commands one by one with
+			   unique_app_add_command().
+			 */
+			int i;
+			app = unique_app_new(name, startup_id);
+
+			for (i = 3; i < items; i += 2) {
+				SV *command_name_sv = ST(i);
+				SV *command_id_sv = ST(i + 1);
+				gchar *command_name = NULL;
+				gint command_id;
+
+				if (! looks_like_number(command_id_sv)) {
+					g_object_unref(G_OBJECT(app));
+					croak("Invalid command_id at position %d, expected a number", i + 2);
+				}
+				command_name = SvGChar(command_name_sv);
+				command_id = SvIV(command_id_sv);
+				unique_app_add_command(app, command_name, command_id);
+			}
+		}
+		else {
+			croak("Usage: Gtk2::UniqueApp->new(name, startup_id) or Gtk2::UniqueApp->new_with_commands(name, startup_id, @commands)");
+		}
+
+		RETVAL = app;
+	OUTPUT:
+		RETVAL
 
 
 #UniqueApp*
