@@ -15,20 +15,7 @@ exit main();
 
 
 sub main {
-	die "Usage: --push text | --pop\n" unless @ARGV;
-	my ($operation, $text) = @ARGV;
-	my $command_id = 0;	
-	if ($operation eq '--push') {
-		die "Usage: --push text" unless defined @ARGV;
-		$command_id = $COMMAND_PUSH;
-	}
-	elsif ($operation eq '--pop') {
-		$command_id = $COMMAND_POP;
-	}
-	else {
-		die "Invalid command: $operation\n";
-	}
-
+	my ($command_id, $text) = parse_command(@ARGV);
 
 	# As soon as we create the UniqueApp instance we either have the name we
 	# requested ("org.mydomain.MyApplication", in the example) or we don't because
@@ -44,6 +31,7 @@ sub main {
 	# race condition because the check is already performed at construction time.
 	if ($app->is_running) {
 		my $response = send_command($app, $command_id, $text);
+		print "Command sent\n";
 		return 0;
 	}
 
@@ -72,6 +60,7 @@ sub create_application {
 	# Standard window and windgets
 	my $window = Gtk2::Window->new();
 	$window->set_title("Unique - Example");
+	$window->set_size_request(640, 480);
 	my $textview = Gtk2::TextView->new();
 	my $scroll = Gtk2::ScrolledWindow->new();
 	my $buffer = $textview->get_buffer;
@@ -102,5 +91,25 @@ sub create_application {
 		return "ok";
 	});
 	return $window;
+}
+
+
+sub parse_command {
+	die "Usage: --push text | --pop\n" unless @_;
+	my ($operation, $text) = @_;
+	
+	my $command_id = 0;	
+	if ($operation eq '--push') {
+		die "Usage: --push text" unless defined $text;
+		$command_id = $COMMAND_PUSH;
+	}
+	elsif ($operation eq '--pop') {
+		$command_id = $COMMAND_POP;
+	}
+	else {
+		die "Invalid command: $operation\n";
+	}
+
+	return ($command_id, $text);
 }
 
