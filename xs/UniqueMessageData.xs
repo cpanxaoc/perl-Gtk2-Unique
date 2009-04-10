@@ -66,15 +66,15 @@ SvUniqueMessageData (SV *data) {
 	 *   - filename
 	 */
 	message = unique_message_data_new();
-	if (! ((s = hv_fetch(h, "text", 4, 0)) && SvOK(*s))) {
+	if ((s = hv_fetch(h, "text", 4, 0)) && SvOK(*s)) {
 		is_valid = TRUE;
 		unique_message_data_set_text(message, SvGChar(*s), sv_len(*s));
 	}
-	if (! ((s = hv_fetch(h, "uris", 4, 0)) && SvOK(*s))) {
+	if ((s = hv_fetch(h, "uris", 4, 0)) && SvOK(*s)) {
 		is_valid = TRUE;
 		/* unique_message_data_set_uris(message, SvGChar(*s)); */
 	}
-	if (! ((s = hv_fetch(h, "filename", 8, 0)) && SvOK(*s))) {
+	if ((s = hv_fetch(h, "filename", 8, 0)) && SvOK(*s)) {
 		is_valid = TRUE;
 		unique_message_data_set_filename(message, SvGChar(*s));
 	}
