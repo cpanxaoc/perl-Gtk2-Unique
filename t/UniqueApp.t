@@ -21,9 +21,27 @@ sub tests {
 	$app->watch_window($window);
 	
 	ok(! $app->is_running(), "is_running()");
-	
-	my $response = $app->send_message($COMMAND_TEST, undef);
+
+	my $response;
+#	$response = $app->send_message($COMMAND_TEST);
+#	isa_ok($response, 'Gtk2::UniqueResponse');
+#	is ($response, 'invalid', "send_message(undef)");
+
+	$response = $app->send_message($COMMAND_TEST, {text => "hello"});
+	isa_ok($response, 'Gtk2::UniqueResponse');
 	is ($response, 'invalid', "send_message()");
-	
+
+	$response = $app->send_message($COMMAND_TEST, {filename => __FILE__});
+	isa_ok($response, 'Gtk2::UniqueResponse');
+	is ($response, 'invalid', "send_message()");
+
+	$response = $app->send_message($COMMAND_TEST, {uris => [
+		'http://live.gnome.org/LibUnique',
+		'http://gtk2-perl.sourceforge.net/',
+	]});
+	isa_ok($response, 'Gtk2::UniqueResponse');
+	is ($response, 'invalid', "send_message()");
+
 	return 0;
 }
+
