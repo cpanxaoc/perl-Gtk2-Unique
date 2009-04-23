@@ -37,12 +37,7 @@ sub main {
 
 	# Create the single application instance and wait for other requests
 	my $window = create_application($app, $text);
-	eval {
-		Gtk2->main();
-	};
-	if (my $error = $@) {
-		warn "Error: $error";
-	}
+	Gtk2->main();
 	
 	return 0;
 }
