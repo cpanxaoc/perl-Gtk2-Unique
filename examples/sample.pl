@@ -79,6 +79,11 @@ sub create_application {
 		
 		my $text = $message->get_text;
 		$buffer->insert($buffer->get_end_iter, "$text\n");
+		
+		printf "Screen %s\n", $message->get_screen;
+		printf "Startup id %s\n", $message->get_startup_id;
+		printf "get_workspace %s\n", $message->get_workspace;
+		printf "%s\n", $message->get_screen;
 
 		# Must return a "Gtk2::UniqueResponse"
 		return 'ok';
