@@ -30,7 +30,7 @@ sub main {
 	# race condition because the check is already performed at construction time.
 	if ($app->is_running) {
 		my $response = $app->send_message($COMMAND_WRITE, {text => $text});
-		print "Command sent\n";
+		print "Command sent, response = $response\n";
 		return 0;
 	}
 
@@ -53,7 +53,7 @@ sub create_application {
 	# Standard window and windgets
 	my $window = Gtk2::Window->new();
 	$window->set_title("Unique - Example");
-	$window->set_size_request(640, 480);
+	$window->set_size_request(480, 240);
 	my $textview = Gtk2::TextView->new();
 	my $scroll = Gtk2::ScrolledWindow->new();
 	my $buffer = $textview->get_buffer;
@@ -66,20 +66,23 @@ sub create_application {
 	$window->show_all();
 
 	# Widget signals
-	$window->signal_connect(destroy => sub {
+	$window->signal_connect(delete_event => sub {
+		print "delete_event\n";
 		Gtk2->main_quit();
+		return TRUE;
 	});
-
 
 	# Listen for new commands
 	$app->watch_window($window);
 	$app->signal_connect('message-received' => sub {
 		my ($app, $command, $message, $time) = @_;
-		$window->hide();
-		print "Got a command @_\n";
 		
+		my $text = $message->get_text;
+		$buffer->insert($buffer->get_end_iter, "$text\n");
+
 		# Must return a "Gtk2::UniqueResponse"
-		return "ok";
+		return 'ok';
 	});
+
 	return $window;
 }
