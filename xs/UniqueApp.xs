@@ -10,7 +10,7 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 		Gtk2::UniqueApp::new_with_commands = 1
 	
 	PREINIT:
-		UniqueApp *app;
+		UniqueApp *app = NULL;
 		
 	CODE:
 		PERL_UNUSED_VAR(ix);
@@ -72,14 +72,13 @@ unique_app_is_running (UniqueApp *app)
 UniqueResponse
 unique_app_send_message (UniqueApp *app, gint command_id, HV *data)
 	PREINIT:
-		UniqueMessageData *message;
-		SV **s;
+		UniqueMessageData *message = NULL;
+		SV **s = NULL;
+
 	CODE:
-		g_print("send_message()\n");
 		if (data) {
 			message = unique_message_data_new();
 			if ((s = hv_fetch(data, "text", 4, 0)) && SvOK(*s)) {
-				g_print("Set message text to: %s\n", SvGChar(*s));
 				unique_message_data_set_text(message, SvGChar(*s), sv_len(*s));
 			}
 			else if ((s = hv_fetch(data, "uris", 4, 0)) && SvOK(*s)) {
@@ -89,18 +88,17 @@ unique_app_send_message (UniqueApp *app, gint command_id, HV *data)
 				int i;
 
 				if (SvTYPE(SvRV(*s)) != SVt_PVAV) {
-					croak("Field 'uris' must point to an hash ref");
+					croak("Field 'uris' must point to an array ref");
 				}
 
 				/* Convert the Perl array into a C array of strings */
 				av = (AV*) SvRV(*s);
-				length = av_len(av) + 1;
+				length = av_len(av) + 2; /* last index + extra NULL padding */
 				
 				uris = g_new0(gchar *, length);
-				g_print("Set message uris to: %s\n", SvGChar(*s));
 				for (i = 0; i < length - 1; ++i) {
-					SV **string = av_fetch(av, i, FALSE);
-					uris[i] = SvGChar(*string);
+					SV **uri_sv = av_fetch(av, i, FALSE);
+					uris[i] = SvGChar(*uri_sv);
 				}
 				uris[length - 1] = NULL;
 
@@ -108,7 +106,6 @@ unique_app_send_message (UniqueApp *app, gint command_id, HV *data)
 				g_free(uris);
 			}
 			else if ((s = hv_fetch(data, "filename", 8, 0)) && SvOK(*s)) {
-				g_print("Set message filename to: %s\n", SvGChar(*s));
 				unique_message_data_set_text(message, SvGChar(*s), sv_len(*s));
 			}
 		}
