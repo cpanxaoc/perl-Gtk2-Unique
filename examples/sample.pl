@@ -6,6 +6,8 @@ use warnings;
 use Glib qw(TRUE FALSE);
 use Gtk2 '-init';
 use Gtk2::Unique;
+use Encode;
+use Data::Dumper;
 
 my $COMMAND_WRITE = 1;
 
@@ -16,7 +18,8 @@ exit main();
 sub main {
 	die "Usage: message\n" unless @ARGV;
 	my ($text) = @ARGV;
-
+	$text = decode('UTF-8', $text);
+	
 	# As soon as we create the UniqueApp instance we either have the name we
 	# requested ("org.mydomain.MyApplication", in the example) or we don't because
 	# there already is an application using the same name.
@@ -29,7 +32,8 @@ sub main {
 	# If there already is an instance running, this will return TRUE; there's no
 	# race condition because the check is already performed at construction time.
 	if ($app->is_running) {
-		my $response = $app->send_message($COMMAND_WRITE, {text => $text});
+		my $data = [$text, '/etc/passwd'];
+		my $response = $app->send_message($COMMAND_WRITE, data => '/etc/passwd');
 		print "Command sent, response = $response\n";
 		return 0;
 	}
@@ -77,14 +81,10 @@ sub create_application {
 	$app->signal_connect('message-received' => sub {
 		my ($app, $command, $message, $time) = @_;
 		
-		my $text = $message->get_text;
+		my $text = Dumper($message->get);
+		print "Got $text\n";
 		$buffer->insert($buffer->get_end_iter, "$text\n");
 		
-		printf "Screen %s\n", $message->get_screen;
-		printf "Startup id %s\n", $message->get_startup_id;
-		printf "get_workspace %s\n", $message->get_workspace;
-		printf "%s\n", $message->get_screen;
-
 		# Must return a "Gtk2::UniqueResponse"
 		return 'ok';
 	});
