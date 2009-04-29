@@ -3,10 +3,20 @@
 
 MODULE = Gtk2::UniqueMessageData  PACKAGE = Gtk2::UniqueMessageData  PREFIX = unique_message_data_
 
-
-#const guchar_ornull*
-#unique_message_data_get (UniqueMessageData *message_data)
-
+SV*
+unique_message_data_get (UniqueMessageData *message_data)
+	PREINIT:
+		const guchar *string = NULL;
+		gint length = 0;
+		
+	CODE:
+		string = unique_message_data_get(message_data, &length);
+		if (string == NULL) {XSRETURN_UNDEF;}
+		
+		RETVAL = newSVpvn(string, length);
+	
+	OUTPUT:
+		RETVAL
 
 gchar*
 unique_message_data_get_text (UniqueMessageData *message_data)
