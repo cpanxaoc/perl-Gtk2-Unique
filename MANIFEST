@@ -13,4 +13,4 @@ xs/Unique.xs
 t/Unique.t
 t/UniqueApp.t
 t/UniqueBackend.t
-t/UniqueMessageData.t
+examples/sample.pl
