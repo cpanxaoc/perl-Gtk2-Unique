@@ -53,6 +53,7 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 		}
 
 		RETVAL = app;
+
 	OUTPUT:
 		RETVAL
 
@@ -157,6 +158,7 @@ unique_app_send_message (UniqueApp *app, gint command_id, ...)
 		}
 		
 		RETVAL = unique_app_send_message(app, command_id, message);
+		
 		if (message) {
 			unique_message_data_free(message);
 		}
