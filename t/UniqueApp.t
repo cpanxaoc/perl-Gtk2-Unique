@@ -3,13 +3,13 @@
 use strict;
 use warnings;
 
-use Gtk2::TestHelper tests => 18;
+use Gtk2::TestHelper tests => 10;
 
 use Gtk2::Unique;
 
 my $COMMAND_FOO = 1;
 my $COMMAND_BAR = 2;
-
+my $APP_NAME = 'org.example.UnitTets';
 
 exit tests();
 
@@ -22,7 +22,7 @@ sub tests {
 
 
 sub tests_new {
-	my $app = Gtk2::UniqueApp->new("org.example.Sample", undef);
+	my $app = Gtk2::UniqueApp->new($APP_NAME, undef);
 	isa_ok($app, 'Gtk2::UniqueApp');
 	
 	$app->add_command(foo => $COMMAND_FOO);
@@ -39,7 +39,7 @@ sub tests_new_with_commands {
 		bar => $COMMAND_BAR,
 	);
 
-	my $app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, @commands);
+	my $app = Gtk2::UniqueApp->new_with_commands($APP_NAME, undef, @commands);
 	isa_ok($app, 'Gtk2::UniqueApp');
 	
 	generic_test($app);
@@ -50,7 +50,7 @@ sub tests_new_with_commands {
 	$app = undef;
 	$pass = 1;
 	eval {
-		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, foo => 'not-an-int');
+		$app = Gtk2::UniqueApp->new_with_commands($APP_NAME, undef, foo => 'not-an-int');
 		$pass = 0;
 	};
 	if (my $error = $@) {
@@ -63,7 +63,7 @@ sub tests_new_with_commands {
 	$app = undef;
 	$pass = 1;
 	eval {
-		$app = Gtk2::UniqueApp->new_with_commands("org.example.Sample", undef, foo => 1, 'bar');
+		$app = Gtk2::UniqueApp->new_with_commands($APP_NAME, undef, foo => 1, 'bar');
 		$pass = 0;
 	};
 	if (my $error = $@) {
@@ -77,32 +77,28 @@ sub tests_new_with_commands {
 sub generic_test {
 	my ($app) = @_;
 	
-	my $window = Gtk2::Window->new();
-	$app->watch_window($window);
-	
-	ok(! $app->is_running(), "is_running()");
-
+	if (! $app->is_running()) {
+		SKIP: {
+			skip "No app is running; execute perl -Mblib examples/unit-tests.pl", 3;
+		}
+		return;
+	}
 	my $response;
-#	$response = $app->send_message($COMMAND_TEST);
-#	isa_ok($response, 'Gtk2::UniqueResponse');
-#	is($response, 'invalid', "send_message(undef)");
 
 	$response = $app->send_message($COMMAND_FOO, text => "hello");
-	isa_ok($response, 'Gtk2::UniqueResponse');
-	is($response, 'invalid', "send_message(text)");
+	is($response, 'ok', "send_message(text)");
 
-	$response = $app->send_message($COMMAND_FOO, filename => __FILE__);
-use Data::Dumper;
-print Dumper($response);
-print "Response ->$response<-\n";
-	isa_ok($response, 'Gtk2::UniqueResponse');
+	$response = $app->send_message($COMMAND_BAR, filename => __FILE__);
 	is($response, 'invalid', "send_message(filename)");
 
 	$response = $app->send_message($COMMAND_FOO, uris => [
 		'http://live.gnome.org/LibUnique',
 		'http://gtk2-perl.sourceforge.net/',
 	]);
-	isa_ok($response, 'Gtk2::UniqueResponse');
-	is($response, 'invalid', "send_message(uris)");
+	is($response, 'ok', "send_message(uris)");
+
+	
+	my $window = Gtk2::Window->new();
+	$app->watch_window($window);
 }
 
