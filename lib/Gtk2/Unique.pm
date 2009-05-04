@@ -8,6 +8,52 @@ Gtk2::Unique - Use single instance applications
 
 	use Gtk2 '-init';
 	use Gtk2::Unique;
+	
+	my $COMMAND_FOO = 1;
+	my $COMMAND_BAR = 2;
+	
+	my $app = Gtk2::UniqueApp->new(
+		"org.example.UnitTets", undef,
+		foo => $COMMAND_FOO,
+		bar => $COMMAND_BAR,
+	);
+	
+	
+	if ($app->is_running) {
+		# The application is already running, send it a message
+		my ($text) = @ARGV ? @ARGV : ("Foo text here");
+		$app->send_message($COMMAND_FOO, text => $text);
+	}
+	else {
+		# Create the single application instance and wait for other requests
+		my $window = create_application_window($app);
+		Gtk2->main();
+	}
+	
+	
+	sub create_application_window {
+		my ($app) = @_;
+		
+		my $window = Gtk2::Window->new();
+		my $label = Gtk2::Label->new("Waiting for a message");
+		$window->add($label);
+		$window->set_size_request(480, 120);
+		$window->show_all();
+		
+		$window->signal_connect(delete_event => sub {
+			Gtk2->main_quit();
+			return TRUE;
+		});
+		
+		# Watch the main window and register a handler that will be called each time
+		# that there's a new message.
+		$app->watch_window($window);
+		$app->signal_connect('message-received' => sub {
+			my ($app, $command, $message, $time) = @_;
+			$label->set_text($message->get_text);
+			return 'ok';
+		});
+	}
 
 =head1 DESCRIPTION
 
@@ -18,6 +64,12 @@ message to the running instance.
 
 For more information about libunique see:
 L<http://live.gnome.org/LibUnique>.
+
+=head1 BUGS & API
+
+This is the first release of the module, some bugs can be expected to be found.
+Furthermore, the Perl API is not yet frozen, if you would like to suggest some
+changes please do so as fast as possible.
 
 =head1 AUTHORS
 
