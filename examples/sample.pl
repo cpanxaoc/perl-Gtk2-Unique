@@ -18,13 +18,14 @@ exit main();
 sub main {
 	die "Usage: message\n" unless @ARGV;
 	my ($text) = @ARGV;
+	# If we want to pass UTF-8 text in the command line arguments
 	$text = decode('UTF-8', $text);
 	
 	# As soon as we create the UniqueApp instance we either have the name we
 	# requested ("org.mydomain.MyApplication", in the example) or we don't because
 	# there already is an application using the same name.
 	my $app = Gtk2::UniqueApp->new(
-		"org.mydomain.MyApplication", undef,
+		"org.example.Sample", undef,
 		write => $COMMAND_WRITE,
 	);
 
@@ -34,7 +35,6 @@ sub main {
 	if ($app->is_running) {
 		my $data = [$text, '/etc/passwd'];
 		my $response = $app->send_message($COMMAND_WRITE, data => '/etc/passwd');
-		print "Command sent, response = $response\n";
 		return 0;
 	}
 
@@ -71,7 +71,6 @@ sub create_application {
 
 	# Widget signals
 	$window->signal_connect(delete_event => sub {
-		print "delete_event\n";
 		Gtk2->main_quit();
 		return TRUE;
 	});
@@ -82,7 +81,6 @@ sub create_application {
 		my ($app, $command, $message, $time) = @_;
 		
 		my $text = Dumper($message->get);
-		print "Got $text\n";
 		$buffer->insert($buffer->get_end_iter, "$text\n");
 		
 		# Must return a "Gtk2::UniqueResponse"
