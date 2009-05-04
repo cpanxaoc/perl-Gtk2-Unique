@@ -82,7 +82,11 @@ sub main {
 		MAN3PODS      => {
 			Glib::MakeHelper->do_pod_files(@XS_FILES),
 		},
-
+		
+		META_MERGE => {
+			repository => 'http://github.com/potyl/gtk2-unique/tree/master',
+		},
+		
 		$DEPENDS->get_makefile_vars(),
 		
 		# Remove the build folder when doing "make clean"
