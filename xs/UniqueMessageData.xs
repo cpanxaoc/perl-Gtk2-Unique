@@ -40,7 +40,6 @@ unique_message_data_get_uris (UniqueMessageData *message_data)
 		for (i = 0; TRUE; ++i) {
 			uri = uris[i];
 			if (uri == NULL) {break;}
-			g_print ("URI = %s\n", uri);
 			
 			XPUSHs(sv_2mortal(newSVGChar(uri)));
 		}

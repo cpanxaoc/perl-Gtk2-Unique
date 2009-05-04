@@ -83,7 +83,6 @@ unique_app_send_message (UniqueApp *app, gint command_id, ...)
 		SV **s = NULL;
 
 	CODE:
-		g_print("Items: %d\n", (int)items);
 		if (items == 4) {
 			SV *sv_data;
 			gchar *type;
@@ -165,4 +164,3 @@ unique_app_send_message (UniqueApp *app, gint command_id, ...)
 
 	OUTPUT:
 		RETVAL
-
