@@ -26,8 +26,7 @@ sub tests {
 	is($backend->get_screen, Gtk2::Gdk::Screen->get_default, "set_screen()");
 	
 	ok($backend->get_workspace >= 0, "get_workspace()");
-	
-	ok(!$backend->request_name(), "request_name()");
+	ok($backend->request_name(), "request_name()");
 	
 #	my $response = $backend->send_message(1, undef, 0);
 #	is ($response, '', "send_message()");
