@@ -13,4 +13,5 @@ xs/Unique.xs
 t/Unique.t
 t/UniqueApp.t
 t/UniqueBackend.t
+t/unit-tests.pl
 examples/sample.pl
