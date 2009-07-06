@@ -85,7 +85,7 @@ unique_app_is_running (UniqueApp *app)
 UniqueResponse
 unique_app_send_message (UniqueApp *app, SV *command, ...)
 	ALIAS:
-		unique_app_send_message_by_name = 1
+		send_message_by_name = 1
 
 	PREINIT:
 		UniqueMessageData *message = NULL;
