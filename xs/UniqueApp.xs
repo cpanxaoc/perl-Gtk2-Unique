@@ -7,7 +7,7 @@ MODULE = Gtk2::UniqueApp  PACKAGE = Gtk2::UniqueApp  PREFIX = unique_app_
 UniqueApp_noinc*
 unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 	ALIAS:
-		Gtk2::UniqueApp::new_with_commands = 1
+		new_with_commands = 1
 	
 	PREINIT:
 		UniqueApp *app = NULL;
