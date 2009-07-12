@@ -22,7 +22,7 @@ Gtk2::Unique - Use single instance applications
 	if ($app->is_running) {
 		# The application is already running, send it a message
 		my ($text) = @ARGV ? @ARGV : ("Foo text here");
-		$app->send_message($COMMAND_FOO, text => $text);
+		$app->send_message_by_name('foo', text => $text);
 	}
 	else {
 		# Create the single application instance and wait for other requests
