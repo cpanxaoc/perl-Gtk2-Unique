@@ -190,6 +190,12 @@ unique_app_is_running (UniqueApp *app)
 #
 #
 
+=for apidoc send_message
+
+Same as C<Gkt2::UniqueApp::send_message_by_name()>, but uses a message id
+instead of a name.
+
+=cut
 =for apidoc
 
 Sends command to a running instance of app. If you need to pass data to the
