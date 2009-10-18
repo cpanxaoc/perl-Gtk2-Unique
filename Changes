@@ -1,7 +1,8 @@
 Revision history for Gtk2::Unique
 
 
-0.03_01 Sun Oct 18 21:36:43 CEST 2009
+0.03_01 Sun Oct 18 23:03:16 CEST 2009
+	Add the version check functions (C macros).
 	Documentation updates.
 
 
