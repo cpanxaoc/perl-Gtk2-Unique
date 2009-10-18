@@ -12,7 +12,8 @@ MODULE = Gtk2::UniqueMessageData  PACKAGE = Gtk2::UniqueMessageData  PREFIX = un
 
 This class wraps the messages passed to a C<Gtk2::UniqueApp>. Usually you will
 never create a message with the Perl API has this is done by the bindings on
-your behalf.
+your behalf. Since messages are only read through the Perl bidings the methods
+for setting the contents of a message are not accessible.
 
 What's important to understand is that a C<Gtk2::MessageData> is a generic
 container for all message types (text, data, filename and uris). There's no way
