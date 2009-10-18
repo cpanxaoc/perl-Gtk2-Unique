@@ -71,6 +71,11 @@ to provide an arbitrary integer and a string for the command.
 
 =cut
 
+=for apidoc new_with_commands
+
+An alias for C<Gtk2::UniqueApp-E<gt>new()>.
+
+=cut
 =for apidoc
 
 Creates a new Gtk2::UniqueApp instance for name passing a start-up notification
