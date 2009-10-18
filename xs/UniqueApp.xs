@@ -3,7 +3,91 @@
 
 MODULE = Gtk2::UniqueApp  PACKAGE = Gtk2::UniqueApp  PREFIX = unique_app_
 
+=for object Gtk2::UniqueApp - Base class for singleton applications
+=cut
 
+=for position DESCRIPTION
+
+=head1 SYNOPSIS
+
+	my $app = Gtk2::UniqueApp->new(
+		"org.example.UnitTets", undef,
+		foo => $COMMAND_FOO,
+		bar => $COMMAND_BAR,
+	);
+	if ($app->is_running) {
+		# The application is already running, send it a message
+		$app->send_message_by_name('foo', text => "Hello world");
+	}
+	else {
+		my $window = Gtk2::Window->new();
+		my $label = Gtk2::Label->new("Waiting for a message");
+		$window->add($label);
+		$window->set_size_request(480, 120);
+		$window->show_all();
+		
+		$window->signal_connect(delete_event => sub {
+			Gtk2->main_quit();
+			return TRUE;
+		});
+		
+		# Watch the main window and register a handler that will be called each time
+		# that there's a new message.
+		$app->watch_window($window);
+		$app->signal_connect('message-received' => sub {
+			my ($app, $command, $message, $time) = @_;
+			$label->set_text($message->get_text);
+			return 'ok';
+		});
+
+		Gtk2->main();
+	}
+
+=head1 DESCRIPTION
+
+B<Gtk2::UniqueApp> is the base class for single instance applications. You can
+either create an instance of UniqueApp via C<Gtk2::UniqueApp-E<gt>new()> and
+C<Gtk2::UniqueApp-E<gt>_with_commands()>; or you can subclass Gtk2::UniqueApp
+with your own application class.
+
+A Gtk2::UniqueApp instance is guaranteed to either be the first running at the
+time of creation or be able to send messages to the currently running instance;
+there is no race possible between the creation of the Gtk2::UniqueApp instance
+and the call to C<Gtk2::UniqueApp::is_running()>.
+
+The usual method for using the Gtk2::UniqueApp API is to create a new instance,
+passing an application-dependent name as construction-only property; the
+C<Gtk2::UniqueApp:name> property is required, and should be in the form of a
+domain name, like I<org.gnome.YourApplication>.
+
+After the creation, you should check whether an instance of your application is
+already running, using C<Gtk2::UniqueApp::is_running()>; if this method returns
+C<FALSE> the usual application construction sequence can continue; if it returns
+C<TRUE> you can either exit or send a message using L<Gtk2::UniqueMessageData>
+and C<Gtk2::UniqueMessageData::send_message()>.
+
+You can define custom commands using C<Gtk2::UniqueApp::add_command()>: you need
+to provide an arbitrary integer and a string for the command.
+
+=cut
+
+=for apidoc
+
+Creates a new Gtk2::UniqueApp instance for name passing a start-up notification
+id startup_id. The name must be a unique identifier for the application, and it
+must be in form of a domain name, like I<org.gnome.YourApplication>.
+
+If startup_id is C<undef> the DESKTOP_STARTUP_ID environment variable will be
+check, and if that fails a "fake" startup notification id will be created.
+
+Once you have created a Gtk2::UniqueApp instance, you should check if any other
+instance is running, using C<Gtk2::UniqueApp::is_running()>. If another
+instance is running you can send a command to it, using the
+C<Gtk2::UniqueApp::send_message()> function; after that, the second instance
+should quit. If no other instance is running, the usual logic for creating the
+application can follow.
+
+=cut
 UniqueApp_noinc*
 unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 	ALIAS:
@@ -57,15 +141,33 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 	OUTPUT:
 		RETVAL
 
+=for apidoc
 
+Adds command_name as a custom command that can be used by app. You must call
+C<Gtk2::UniqueApp::add_command()> before C<Gtk2::UniqueApp::send_message()> in
+order to use the newly added command.
+
+The command name is used internally: you need to use the command's logical id in
+C<Gtk2::UniqueApp::send_message()> and inside the I<message-received> signal.
+
+=cut
 void
 unique_app_add_command (UniqueApp *app, const gchar *command_name, gint command_id)
 
 
+=for apidoc
+
+Makes app "watch" a window. Every watched window will receive startup notification changes automatically.
+
+=cut
 void
 unique_app_watch_window (UniqueApp *app, GtkWindow *window)
 
+=for apidoc
 
+Checks whether another instance of app is running.
+
+=cut
 gboolean
 unique_app_is_running (UniqueApp *app)
 
@@ -82,6 +184,46 @@ unique_app_is_running (UniqueApp *app)
 # $app->send_message_by_name('command', uris => @uri) -> set_uris() unique_app_send_message(app, command_id, message);
 #
 #
+
+=for apidoc
+
+Sends command to a running instance of app. If you need to pass data to the
+instance, you have to indicate the type of message that will be passed. The
+accepted types are:
+
+=over
+
+=item text
+
+A plain text message
+
+=item data
+
+Binary data
+
+=item uris
+
+URI, multiple values can be passed
+
+=back
+
+The running application will receive a I<message-received> signal and will call
+the various signal handlers attach to it. If any handler returns a
+C<Gtk2::UniqueResponse> different than C<ok>, the emission will stop.
+
+Usages:
+
+	$app->send_message_by_name(write => data => $data);
+	$app->send_message_by_name(greet => text => "Hello World!");
+	$app->send_message_by_name(greet => uris =>
+		'http://search.cpan.org/',
+		'http://www.gnome.org/',
+	);
+
+B<NOTE>: If you prefer to use an ID instead of a message name then use the
+function C<Gkt2::UniqueApp::send_message()>. The usage is the same as this one.
+
+=cut
 UniqueResponse
 unique_app_send_message (UniqueApp *app, SV *command, ...)
 	ALIAS:
@@ -196,3 +338,4 @@ unique_app_send_message (UniqueApp *app, SV *command, ...)
 
 	OUTPUT:
 		RETVAL
+
