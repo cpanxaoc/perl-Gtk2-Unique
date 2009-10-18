@@ -109,7 +109,7 @@ unique_app_new (class, const gchar *name, const gchar_ornull *startup_id, ...)
 		}
 		else if (items > 3 && (items % 2 == 1)) {
 			/* Calling unique_app_new_with_command(), First create a new app with
-			   unique_app_new() and the populate the commands one by one with
+			   unique_app_new() and then populate the commands one by one with
 			   unique_app_add_command().
 			 */
 			int i;
@@ -226,7 +226,7 @@ Usages:
 
 	$app->send_message_by_name(write => data => $data);
 	$app->send_message_by_name(greet => text => "Hello World!");
-	$app->send_message_by_name(greet => uris =>
+	$app->send_message_by_name(open  => uris =>
 		'http://search.cpan.org/',
 		'http://www.gnome.org/',
 	);
