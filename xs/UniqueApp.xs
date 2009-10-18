@@ -214,6 +214,10 @@ A plain text message
 
 Binary data
 
+=item filename
+
+A file name
+
 =item uris
 
 URI, multiple values can be passed
