@@ -56,3 +56,4 @@ unique_message_data_get_startup_id (UniqueMessageData *message_data)
 
 guint
 unique_message_data_get_workspace (UniqueMessageData *message_data)
+
