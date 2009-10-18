@@ -6,7 +6,7 @@ MODULE = Gtk2::UniqueApp  PACKAGE = Gtk2::UniqueApp  PREFIX = unique_app_
 =for object Gtk2::UniqueApp - Base class for singleton applications
 =cut
 
-=for position DESCRIPTION
+=for position SYNOPSIS
 
 =head1 SYNOPSIS
 
@@ -42,6 +42,8 @@ MODULE = Gtk2::UniqueApp  PACKAGE = Gtk2::UniqueApp  PREFIX = unique_app_
 
 		Gtk2->main();
 	}
+
+=for position DESCRIPTION
 
 =head1 DESCRIPTION
 
