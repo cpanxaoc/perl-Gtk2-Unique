@@ -230,9 +230,9 @@ function C<Gkt2::UniqueApp::send_message()>. The usage is the same as this one.
 
 =cut
 UniqueResponse
-unique_app_send_message (UniqueApp *app, SV *command, ...)
+unique_app_send_message_by_name (UniqueApp *app, SV *command, ...)
 	ALIAS:
-		send_message_by_name = 1
+		send_message = 1
 
 	PREINIT:
 		UniqueMessageData *message = NULL;
@@ -244,17 +244,17 @@ unique_app_send_message (UniqueApp *app, SV *command, ...)
 		switch (ix) {
 			case 0:
 				{
-					command_id = (gint) SvIV(command);
-				}
-			break;
-
-			case 1:
-				{
 					gchar *command_name = SvGChar(command);
 					command_id = unique_command_from_string(app, command_name);
 					if (command_id == 0) {
 							croak("Command '%s' isn't registered with the application", command_name);
 					}
+				}
+			break;
+
+			case 1:
+				{
+					command_id = (gint) SvIV(command);
 				}
 			break;
 
