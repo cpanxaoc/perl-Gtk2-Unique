@@ -1,6 +1,6 @@
 Revision history for Gtk2::Unique
 
-0.03_01 Tue Oct 20 12:06:37 CEST 2009
+0.03 Tue Oct 20 20:21:27 CEST 2009
 	Add the version check macros to the bindings.
 	Fix the unit tests (now using the bacon backend).
 	Documentation updates.
