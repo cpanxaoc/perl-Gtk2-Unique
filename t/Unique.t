@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Gtk2::TestHelper tests => 7;
+use Gtk2::TestHelper tests => 12;
 
 use Gtk2::Unique;
 
@@ -17,7 +17,14 @@ sub tests {
 
 
 sub test_version {
-	ok($Gtk2::Unique::VERSION, "Library loaded");
+	ok($Gtk2::Unique::VERSION, "Module loaded");
+
+
+	ok(Gtk2::Unique::VERSION, "Version");
+	ok(Gtk2::Unique::VERSION_HEX, "Version hex");
+	ok(Gtk2::Unique::API_VERSION, "API version");
+	ok(Gtk2::Unique::PROTOCOL_VERSION, "Protocol version");
+	ok(Gtk2::Unique::DEFAULT_BACKEND, "Default backend");
 
 	ok(defined Gtk2::Unique::MAJOR_VERSION, "MAJOR_VERSION exists");
 	ok(defined Gtk2::Unique::MINOR_VERSION, "MINOR_VERSION exists");
