@@ -11,6 +11,17 @@ my $COMMAND_FOO = 1;
 my $COMMAND_BAR = 2;
 my $APP_NAME = 'org.example.UnitTets';
 
+
+# The D-Bus backend doesn't seem to realize that an application is no longer
+# running when created from the same Perl script. The second call to
+# Gtk2::UniqueApp->new() will think that the application is already running when
+# it isn't. This happens even if the original $app variable exists no longer.
+#
+# Besides the bacon backend is the only one guaranteed to exist.
+#
+local $ENV{UNIQUE_BACKEND} = 'bacon';
+
+
 exit tests();
 
 
