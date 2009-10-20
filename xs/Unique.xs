@@ -1,5 +1,9 @@
 #include "unique-perl.h"
 
+#define _FIXED_UNIQUE_CHECK_VERSION(major,minor,micro) \
+        ((UNIQUE_MAJOR_VERSION > (major)) || \
+         (UNIQUE_MAJOR_VERSION == (major) && UNIQUE_MINOR_VERSION > (minor)) || \
+         (UNIQUE_MAJOR_VERSION == (major) && UNIQUE_MINOR_VERSION == (minor) && UNIQUE_MICRO_VERSION > (micro)))
 
 MODULE = Gtk2::Unique  PACKAGE = Gtk2::Unique  PREFIX = unique_
 
@@ -51,7 +55,17 @@ GET_VERSION_INFO (class)
 gboolean
 CHECK_VERSION (class, guint major, guint minor, guint micro)
 	CODE:
-		RETVAL = UNIQUE_CHECK_VERSION (major, minor, micro);
+/*
+ * So check version is broken as it has a typo and won't compile. But we need
+ * check version to see if libunique has fixed this!
+ *
+ * For now we define our own check version and use that one instead.
+ */
+#if ! _FIXED_UNIQUE_CHECK_VERSION(1, 0, 10)
+		RETVAL = _FIXED_UNIQUE_CHECK_VERSION(major, minor, micro);
+#else
+		RETVAL = UNIQUE_CHECK_VERSION(major, minor, micro);
+#endif
 
 	OUTPUT:
 		RETVAL
