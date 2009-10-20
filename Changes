@@ -1,5 +1,9 @@
 Revision history for Gtk2::Unique
 
+0.04 Tue Oct 20 22:52:47 CEST 2009
+	The macro UNIQUE_CHECK_VERSION will be fixed in 1.1.0.
+
+
 0.03 Tue Oct 20 20:21:27 CEST 2009
 	Add the version check macros to the bindings.
 	Fix the unit tests (now using the bacon backend).
