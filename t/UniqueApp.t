@@ -79,7 +79,7 @@ sub generic_test {
 	
 	if (! $app->is_running()) {
 		SKIP: {
-			skip "No app is running; execute perl -Mblib t/unit-tests.pl", 6;
+			skip "No app is running; execute perl -Mblib t/unit-tests.pl", 8;
 		}
 		return;
 	}
