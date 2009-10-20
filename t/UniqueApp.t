@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Gtk2::TestHelper tests => 16;
+use Gtk2::TestHelper tests => 20;
 
 use Gtk2::Unique;
 
@@ -84,6 +84,12 @@ sub generic_test {
 		return;
 	}
 	my $response;
+
+	$response = $app->send_message($COMMAND_FOO, data => "data in here");
+	is($response, 'ok', "send_message(data)");
+
+	$response = $app->send_message_by_name(foo => data => "data in here");
+	is($response, 'ok', "send_message_by_name(data)");
 
 	$response = $app->send_message($COMMAND_FOO, text => "hello");
 	is($response, 'ok', "send_message(text)");
