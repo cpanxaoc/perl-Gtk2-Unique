@@ -24,7 +24,7 @@ You can override the default backend by setting the UNIQUE_BACKEND environment
 variable with the name of the desired backend.
 
 =cut
-UniqueBackend*
+UniqueBackend_noinc*
 unique_backend_create (class)
 	C_ARGS: /* No args */
 
