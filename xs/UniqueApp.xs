@@ -212,7 +212,7 @@ A plain text message
 
 =item data
 
-Binary data
+Rad data
 
 =item filename
 
