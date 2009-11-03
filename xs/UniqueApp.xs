@@ -30,7 +30,7 @@ perl_unique_app_marshall_message_received (
 	command = g_value_get_int (param_values + 1);
 	g_print("Command is %d\n", command);
 	XPUSHs (sv_2mortal (newSViv(command)));
-	XPUSHs (sv_2mortal (newSVUniqueMessageData (UNIQUE_MESSAGE_DATA (g_value_get_object (param_values + 2)))));
+	XPUSHs (sv_2mortal (gperl_sv_from_value (param_values + 2)));
 	XPUSHs (sv_2mortal (newSVuv (g_value_get_uint (param_values + 3))));
 
 	GPERL_CLOSURE_MARSHAL_PUSH_DATA;
