@@ -10,8 +10,9 @@ perl_unique_app_marshall_message_received (
 	gpointer invocant_hint,
 	gpointer marshal_data)
 {
+	UniqueApp *app;
 	gint command;
-	char * command_name;
+	const gchar *command_name;
 
 	dGPERL_CLOSURE_MARSHAL_ARGS;
 	PERL_UNUSED_VAR (return_value);
@@ -26,10 +27,11 @@ perl_unique_app_marshall_message_received (
 
 	GPERL_CLOSURE_MARSHAL_PUSH_INSTANCE (param_values);
 
-
+	app = (UniqueApp *) g_value_get_object (param_values + 0);
 	command = g_value_get_int (param_values + 1);
-	g_print("Command is %d\n", command);
-	XPUSHs (sv_2mortal (newSViv(command)));
+	command_name = (const gchar *) unique_command_to_string (app, command);
+
+	XPUSHs (sv_2mortal (newSVpv (command_name, 0)));
 	XPUSHs (sv_2mortal (gperl_sv_from_value (param_values + 2)));
 	XPUSHs (sv_2mortal (gperl_sv_from_value (param_values + 3)));
 
