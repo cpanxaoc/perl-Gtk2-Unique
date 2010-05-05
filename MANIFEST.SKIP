@@ -7,3 +7,4 @@
 ^[.]git
 ^Unique[.]bs$
 ^Gtk2-Unique-.+\.tar\.gz$
+.xs-coverage.ignore
