@@ -1,0 +1,19 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">Gtk2::Unique</name>
+  <shortdesc xml:lang="en">Perl bindings for libunique</shortdesc>
+  <homepage rdf:resource="http://live.gnome.org/LibUnique" />
+  <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gtk-perl-list" />
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Emmanuel Rodriguez</foaf:name>
+      <foaf:mbox rdf:resource="mailto:emmanuel.rodriguez@gmail.com" />
+      <gnome:userid>erodriguez</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+</Project>
