@@ -74,7 +74,7 @@ sub main {
 		LICENSE       => 'perl, lgpl',
 
 		PREREQ_PM     => {
-			'Gtk2' => '1.161', # Other verions might work too (Ubuntu 8.04 has this version)
+			'Gtk2' => '1.161', # Other versions might work too (Ubuntu 8.04 has this version)
 		},
 		PREREQ_FATAL  => 1,
 		
