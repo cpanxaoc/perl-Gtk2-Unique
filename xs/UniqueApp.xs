@@ -2,6 +2,7 @@
 #include <gperl_marshal.h>
 
 G_CONST_RETURN gchar * unique_command_to_string (UniqueApp *app, gint command);
+gint unique_command_from_string (UniqueApp *app, const gchar *command);
 
 static void
 perl_unique_app_marshall_message_received (
