@@ -1,5 +1,9 @@
 Revision history for Gtk2::Unique
 
+0.06 Fri Feb 24 22:08:59 CET 2017
+	[RT-120115] Fix: crash on starting second instance.
+	Fix compilation warnings.
+
 
 0.05 Wed May  5 19:48:14 CEST 2010
 	Minor XS update: the length of a string was computed twice.
