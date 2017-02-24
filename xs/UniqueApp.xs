@@ -74,6 +74,12 @@ BOOT:
 
 =head1 SYNOPSIS
 
+    use Gtk2 '-init';
+    use Gtk2::Unique;
+
+    my $COMMAND_FOO = 1;
+    my $COMMAND_BAR = 2;
+
 	my $app = Gtk2::UniqueApp->new(
 		"org.example.UnitTets", undef,
 		foo => $COMMAND_FOO,
