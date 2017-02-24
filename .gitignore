@@ -8,3 +8,5 @@ xs/*.c
 xs/*.o
 Gtk2-Unique-*.tar.gz
 Gtk2-Unique-*/
+/MYMETA.json
+/MYMETA.yml
