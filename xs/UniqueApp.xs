@@ -1,6 +1,8 @@
 #include "unique-perl.h"
 #include <gperl_marshal.h>
 
+G_CONST_RETURN gchar * unique_command_to_string (UniqueApp *app, gint command);
+
 static void
 perl_unique_app_marshall_message_received (
 	GClosure *closure,
