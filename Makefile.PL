@@ -26,6 +26,10 @@ sub main {
 	my @deps = ('Glib');
 	my %pkgconfig;
 	
+   my %pre_reqs = (
+      # Other versions might work too (Ubuntu 8.04 has this version)
+      'Gtk2' => '1.161',
+   );
 	eval {
 		%pkgconfig = ExtUtils::PkgConfig->find("unique-1.0");
 		push @XS_FILES, <xs/*.xs>;
@@ -72,11 +76,7 @@ sub main {
 		VERSION_FROM  => File::Spec->catfile('lib', 'Gtk2', 'Unique.pm'),
 		ABSTRACT_FROM => File::Spec->catfile('lib', 'Gtk2', 'Unique.pm'),
 		LICENSE       => 'perl, lgpl',
-
-		PREREQ_PM     => {
-			'Gtk2' => '1.161', # Other versions might work too (Ubuntu 8.04 has this version)
-		},
-		PREREQ_FATAL  => 1,
+		PREREQ_PM     => { %pre_reqs, },
 		
 		XSPROTOARG    => '-noprototypes ',
 		MAN3PODS      => {
@@ -85,6 +85,7 @@ sub main {
 		
 		META_MERGE => {
 			repository => 'http://github.com/potyl/gtk2-unique/tree/master',
+         configure_requires => \%pre_reqs,
 		},
 		
 		$DEPENDS->get_makefile_vars(),
