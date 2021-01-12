@@ -57,6 +57,9 @@ perl_unique_app_marshall_message_received (
 
 }
 
+=for object Gtk2::UniqueApp a single instance application
+
+=cut
 
 MODULE = Gtk2::UniqueApp  PACKAGE = Gtk2::UniqueApp  PREFIX = unique_app_
 
